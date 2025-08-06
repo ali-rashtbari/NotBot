@@ -4,7 +4,7 @@ using NotBot.Models;
 
 namespace NotBot.Middlewares;
 
-public class ClientSignatureExtractorMiddleware(RequestDelegate next)
+public class ClientSignatureExtractor(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -20,10 +20,10 @@ public class ClientSignatureExtractorMiddleware(RequestDelegate next)
 }
 
 
-public static class ClientSignatureExtractorMiddlewareExtensions
+public static class ClientSignatureExtractorExtensions
 {
-    public static IApplicationBuilder UseClientSignatureExtractorMiddleware(IApplicationBuilder app)
+    public static IApplicationBuilder UseClientSignatureExtractor(this IApplicationBuilder app)
     {
-        return app.UseMiddleware<ClientSignatureExtractorMiddleware>();
+        return app.UseMiddleware<ClientSignatureExtractor>();
     }
 }
