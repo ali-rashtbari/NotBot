@@ -1,5 +1,5 @@
 ﻿namespace NotBot.Exceptions;
 
-internal class InvalidCaptchaException() : ApplicationException("invalid captcha!")
+public class InvalidCaptchaException() : ApplicationException("invalid captcha!")
 {
 }
