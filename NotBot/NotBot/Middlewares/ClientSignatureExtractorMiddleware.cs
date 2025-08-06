@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Builder.Internal;
 using Microsoft.AspNetCore.Http;
 using NotBot.Models;
 
@@ -23,8 +22,8 @@ public class ClientSignatureExtractorMiddleware(RequestDelegate next)
 
 public static class ClientSignatureExtractorMiddlewareExtensions
 {
-    public static void UseClientSignatureExtractorMiddleware(ApplicationBuilder app)
+    public static IApplicationBuilder UseClientSignatureExtractorMiddleware(IApplicationBuilder app)
     {
-        app.UseMiddleware<ClientSignatureExtractorMiddleware>();
+        return app.UseMiddleware<ClientSignatureExtractorMiddleware>();
     }
 }
