@@ -4,6 +4,6 @@ namespace NotBot.Services.Contracts;
 
 public interface INotBotService
 {
-    BuildCaptchaResultDto BuildCaptcha(string clientFingerprint);
+    BuildCaptchaResultDto BuildCaptcha();
     bool VerifyCaptcha(VerifyCaptchaDto verifyRequest);
 }

@@ -13,15 +13,15 @@ namespace NotBot.Services;
 public class NotBotService(IOptions<NotBotOptions> options) : INotBotService
 {
     private readonly NotBotOptions _options = options.Value;
-    public BuildCaptchaResultDto BuildCaptcha(string clientFingerprint)
+    public BuildCaptchaResultDto BuildCaptcha()
     {
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(clientFingerprint);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(NotBotRequestScope.ClientFingerprint);
 
         var code = SecureCaptchaCodeGeenrator.Generate(_options.CharactersCount);
         var expiry = GetExpiryTimestamp(_options.CaptchaCodeExpirationSeconds);
 
         var signedCode = Sign(code);
-        var signedFingerprint = Sign(clientFingerprint);
+        var signedFingerprint = Sign(NotBotRequestScope.ClientFingerprint);
         var signature = Sign($"{signedCode}:{expiry}:{signedFingerprint}");
 
         var token = $"{signedCode}:{expiry}:{signedFingerprint}:{signature}";
@@ -34,7 +34,7 @@ public class NotBotService(IOptions<NotBotOptions> options) : INotBotService
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(verifyRequest.Code);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(verifyRequest.Token);
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(verifyRequest.ClientFingerprint);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(NotBotRequestScope.ClientFingerprint);
 
         var tokenParts = verifyRequest.Token.Split(':');
         if (tokenParts.Length != 4)
@@ -42,7 +42,7 @@ public class NotBotService(IOptions<NotBotOptions> options) : INotBotService
 
         var (signedCode, expiryStr, signedFingerprint, signature) = (tokenParts[0], tokenParts[1], tokenParts[2], tokenParts[3]);
 
-        if (signedFingerprint != Sign(verifyRequest.ClientFingerprint))
+        if (signedFingerprint != Sign(NotBotRequestScope.ClientFingerprint))
             return false;
 
         var expectedSignature = Sign($"{signedCode}:{expiryStr}:{signedFingerprint}");
