@@ -5,14 +5,29 @@
 		<Nullable>disable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>NotBot</Title>
-		<Authors>AAA</Authors>
-		<Product>AAA</Product>
-		<Version>1.0.4</Version>
+		<Authors>Ali Rashtbari</Authors>
+		<Product>NotBot</Product>
+		<Version>1.0.0</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Description>NotBot is a lightweight and secure CAPTCHA library for ASP.NET Core that helps protect your applications from bots by generating and verifying image-based CAPTCHAs. It uses cryptographic signatures and client fingerprinting (based on IP and User-Agent) to ensure that CAPTCHA tokens are unique, tamper-proof, and tied to the requesting client. NotBot also provides middlewares to easily extract necessary tokens and client info during HTTP requests.</Description>
+		<Copyright>© 2025 Ali (AAA). All rights reserved.</Copyright>
+		<PackageTags>captcha;captchagenerator;bot;notbot;botrecognizer;security;aspnetcore</PackageTags>
+		<PackageReleaseNotes>Version 1.0.0 - 2025-08-12
+Added secure CAPTCHA generation and verification using HMAC-SHA256 signatures.
+
+Implemented client fingerprinting with IP and User-Agent for enhanced security.
+
+Provided middleware components for extracting CAPTCHA tokens and client signatures.
+
+Improved CAPTCHA image generation with configurable character count and expiration time.
+
+Added support for both Linux and Windows platforms.
+
+Fixed minor bugs and improved overall stability.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

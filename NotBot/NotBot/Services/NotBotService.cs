@@ -72,7 +72,7 @@ public class NotBotService(IOptions<NotBotOptions> options) : INotBotService
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            options.FontFamilies = ["Liberation Sans"];
+            options.FontFamilies = ["Arial"];
         }
 
         var generator = new SixLaborsCaptchaModule(options);
