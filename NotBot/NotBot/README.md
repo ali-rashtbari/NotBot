@@ -1,8 +1,6 @@
-﻿**README.md**  
-```markdown
-# NotBot
+﻿## NotBot
 
-**NotBot** is a lightweight and secure CAPTCHA generation and verification library for ASP.NET Core.  
+NotBot is a lightweight and secure CAPTCHA generation and verification library for ASP.NET Core.  
 It uses digital signatures (HMAC-SHA256) and client fingerprinting (IP + User-Agent) to ensure the CAPTCHA cannot be reused or tampered with.
 
 ---
@@ -18,11 +16,10 @@ It uses digital signatures (HMAC-SHA256) and client fingerprinting (IP + User-Ag
 
 ---
 
-## Installation
+## Requirements
 
-```bash
-dotnet add package NotBot
-```
+- Default fonts are: Arial, Verdana, Times New Roman.
+- If you want to run your application on Linux, make sure Liberation Sans is installed first.
 
 ---
 

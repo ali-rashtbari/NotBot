@@ -7,7 +7,7 @@
 		<Title>NotBot</Title>
 		<Authors>Ali Rashtbari</Authors>
 		<Product>NotBot</Product>
-		<Version>1.0.0</Version>
+		<Version>1.0.2</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -28,9 +28,14 @@ Improved CAPTCHA image generation with configurable character count and expirati
 Added support for both Linux and Windows platforms.
 
 Fixed minor bugs and improved overall stability.</PackageReleaseNotes>
+		<PackageIcon>fish.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="C:\Users\msonl\Desktop\fish.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
