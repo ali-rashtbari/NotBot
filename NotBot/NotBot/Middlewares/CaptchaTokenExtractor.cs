@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using NotBot.Constants;
 using NotBot.Models;
 
@@ -16,13 +15,5 @@ public class CaptchaTokenExtractor(RequestDelegate next)
         }
 
         await next(httpContext);
-    }
-}
-
-public static class CaptchaTokenExtractorExtensions
-{
-    public static IApplicationBuilder UseCaptchaTokenExtractor(this IApplicationBuilder app)
-    {
-        return app.UseMiddleware<CaptchaTokenExtractor>();
     }
 }
