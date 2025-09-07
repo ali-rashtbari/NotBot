@@ -1,155 +1,101 @@
-# 🧠 NotBot - Captcha Generator API for ASP.NET Core
+## NotBot
 
-A minimal yet secure open-source **Captcha generator service** built with ASP.NET Core and SixLabors.ImageSharp.
-NotBot is designed to prevent bots from abusing your API endpoints using simple token-based image CAPTCHAs.
-
-## 🚀 Features
-
-* ⚡ Generate captcha images with random secure codes.
-* 🧾 Token-based verification with client fingerprinting.
-* 🧠 Customizable options like code length, expiry, and secret key.
-* 🛠 Easily pluggable into any ASP.NET Core project.
-* 🌐 Works cross-platform (Linux, Windows).
+NotBot is a lightweight and secure CAPTCHA generation and verification library for ASP.NET Core.  
+It uses digital signatures (HMAC-SHA256) and client fingerprinting (IP + User-Agent) to ensure the CAPTCHA cannot be reused or tampered with.
 
 ---
 
-## 📸 Example
+## Features
 
-**GET** `/notbot/build`
-Returns a JPEG captcha image and a `token` in the response headers.
-
-**GET** `/notbot/verify?code=ABC123&token=...`
-Verifies the code and token.
-
----
-
-## 🔧 Configuration
-
-Use the following options in your `appsettings.json` to configure NotBot:
-
-```json
-{
-  "NotBotOptions": {
-    "CharactersCount": 6,
-    "CaptchaCodeExpirationSeconds": 120,
-    "SecretKey": "YOUR_SECRET_KEY"
-  }
-}
-```
-
-**🔡️ Make sure `SecretKey` is a strong, random string. It's used to sign and validate tokens.**
+- Generate image-based CAPTCHAs with customizable character length
+- Validate CAPTCHAs with secure HMAC signatures
+- Bind CAPTCHA to a specific client using fingerprinting (IP + User-Agent)
+- Expiration time for each CAPTCHA
+- Built-in middlewares for extracting CAPTCHA tokens and client fingerprints
+- Works on both Linux and Windows
 
 ---
 
-## 🛠️ Usage
+## Requirements
 
-### 1. Install the Package (If Available via NuGet)
+- Default fonts are: Arial, Verdana, Times New Roman.
+- If you want to run your application on Linux, make sure Liberation Sans is installed first.
 
-```bash
-dotnet add package NotBot
-```
+---
 
-Or clone the repo and reference it directly in your solution.
+## Usage
 
-### 2. Register the service in `Program.cs` or `Startup.cs`:
-
+### 1. Register the Service
 ```csharp
+using NotBot;
+
+var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddNotBot(options =>
 {
-    options.CharactersCount = 6;
-    options.CaptchaCodeExpirationSeconds = 120;
-    options.SecretKey = "your-strong-secret-key";
+    options.CharactersCount = 6; // Number of CAPTCHA characters
+    options.CaptchaCodeExpirationSeconds = 120; // Expiration time in seconds
+    options.SecretKey = "A_Strong_Key_For_HMAC"; // Secret key for signing
 });
 ```
 
-### 3. Use the Captcha Endpoints
+---
 
-You can use the built-in endpoints via the included controller:
-
+### 2. Add Middlewares
 ```csharp
-[ApiController]
-[Route("notbot")]
-public class NotBotEndpoints : ControllerBase
-{
-    ...
+var app = builder.Build();
+
+app.UseClientSignatureExtractor();
+app.UseCaptchaTokenExtractor();
+
+app.MapControllers();
+
+app.Run();
+```
+
+---
+
+### 3. Generate a CAPTCHA
+Call the `BuildCaptcha` method from your implementation of `INotBotService` to generate the CAPTCHA image and token.
+
+You can expose it through your own API endpoint, or integrate it into an existing endpoint.  
+For example, you might create an endpoint like `/captcha/build` that returns the image along with the token in the response headers.
+
+---
+
+### 4. Verify a CAPTCHA
+```csharp
+public class SampleService(INotBotService notBotService)
+
+    public async Task<ResultData> DoSomething(RequestData request, CancellationToken cancellationToken = default)
+    {
+
+        ...
+        ...
+        ...
+
+        if (!RequestScope.CaptchaToken.HasValue())
+        {
+            throw new CaptchaTokenIsRequiredException();
+        }
+
+        var isValid = notBotService.VerifyCaptcha(new VerifyCaptchaDto(request.Captcha, NotBotRequestScope.CaptchaToken));
+        if (!isValid)
+        {
+            throw new InvalidCaptchaException();
+        }
+
+        ...
+        ...
+        ...
+    }
 }
 ```
 
-Or inject `INotBotService` and implement your own logic.
-
 ---
 
-## 🧪 Sample Client Request
+## Best Practices
 
-```http
-GET /notbot/build
-```
-
-* 📤 Response Header: `token: xxxxxxxx`
-* 📸 Response Body: JPEG captcha image
-
-```http
-GET /notbot/verify?code=ABC123&token=xxxxxxxx
-```
-
-* ✅ Returns `true` or `false`
-
----
-
-## 🔐 How It Works
-
-1. `BuildCaptcha`:
-
-   * Generates a secure random code (non-ambiguous characters only)
-   * Signs a token using HMAC SHA256 with:
-
-     * code
-     * expiry
-     * fingerprint
-   * Generates an image from the code
-
-2. `VerifyCaptcha`:
-
-   * Validates the token signature
-   * Confirms fingerprint and expiry
-   * Compares user input with the original code
-
----
-
-## 🖥️ Linux Compatibility
-
-The captcha engine uses **Liberation Sans** font automatically when running on Linux OS.
-
----
-
-## 📦 Dependencies
-
-* [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp)
-* [SixLaborsCaptcha](https://github.com/SixLabors/SixLaborsCaptcha)
-* Built-in .NET:
-
-  * `HMACSHA256`
-  * `RandomNumberGenerator`
-
----
-
-## 🧑‍💻 Contributing
-
-Pull requests are welcome.
-If you find a bug or have ideas for improvements, feel free to open an issue.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 💬 Feedback
-
-If you find this project useful or have suggestions, feel free to star ⭐ the repo and reach out!
-
----
-
-Made with ❤️ by [Ali (AAA)](https://github.com/ali-rashtbari)
+- Always use a **strong, random SecretKey** for signing.
+- Serve the CAPTCHA image over HTTPS.
+- Never expose the generated code to the client; only send the signed token.
