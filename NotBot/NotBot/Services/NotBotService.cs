@@ -17,7 +17,7 @@ public class NotBotService(IOptions<NotBotOptions> options) : INotBotService
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(NotBotRequestScope.ClientFingerprint);
 
-        var code = SecureCaptchaCodeGeenrator.Generate(_options.CharactersCount);
+        var code = SecureCaptchaCodeGeenrator.Generate(_options.CharactersCount, _options.AllowedCharacters);
         var expiry = GetExpiryTimestamp(_options.CaptchaCodeExpirationSeconds);
 
         var signedCode = Sign(code);

@@ -4,9 +4,8 @@ namespace NotBot.Services;
 
 public static class SecureCaptchaCodeGeenrator
 {
-    public static string Generate(int length)
+    public static string Generate(int length, string allowedCharacters)
     {
-        var allowedCharacters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
         if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length), "Length must be positive.");
 
         var result = new char[length];
@@ -22,5 +21,10 @@ public static class SecureCaptchaCodeGeenrator
         }
 
         return new string(result);
+    }
+
+    internal static string Generate(int charactersCount, object allowedCharacters)
+    {
+        throw new NotImplementedException();
     }
 }
