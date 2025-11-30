@@ -16,7 +16,16 @@ public static class NotBotRequestScope
         set => _ip.Value = value;
     }
 
-    public static string ClientFingerprint => $"{_ip.Value}-{_userAgent.Value}";
+    public static string ClientFingerprint
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_ip.Value) || string.IsNullOrWhiteSpace(_userAgent.Value))
+                throw new InvalidOperationException("Client signature (IP/UserAgent) is not set.");
+
+            return $"{_ip.Value}-{_userAgent.Value}";
+        }
+    }
 
     private static readonly AsyncLocal<string> _captchaToken = new();
 

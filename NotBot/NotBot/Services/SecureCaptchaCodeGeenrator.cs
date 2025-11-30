@@ -22,9 +22,4 @@ public static class SecureCaptchaCodeGeenrator
 
         return new string(result);
     }
-
-    internal static string Generate(int charactersCount, object allowedCharacters)
-    {
-        throw new NotImplementedException();
-    }
 }
