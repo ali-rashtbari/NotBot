@@ -7,7 +7,7 @@
 		<Title>NotBot</Title>
 		<Authors>Ali Rashtbari</Authors>
 		<Product>NotBot</Product>
-		<Version>1.0.3</Version>
+		<Version>2.3</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -40,6 +40,7 @@ Fixed minor bugs and improved overall stability.</PackageReleaseNotes>
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7" />
